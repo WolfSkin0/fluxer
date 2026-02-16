@@ -21,3 +21,12 @@
 	height: 16px;
 	width: 16px;
 }
+
+.categoryHeader {
+	padding: 4px 12px;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 16px;
+	color: var(--text-primary-muted);
+	text-transform: uppercase;
+}

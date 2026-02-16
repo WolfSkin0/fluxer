@@ -60,39 +60,48 @@ export const AutocompleteMention = observer(function AutocompleteMention({
 	const roles = options.filter(isMentionRole);
 	const specialMentions = options.filter(isSpecialMention);
 
+	const membersOffset = 0;
+	const usersOffset = members.length;
+	const rolesOffset = members.length + users.length;
+	const specialOffset = members.length + users.length + roles.length;
+
 	return (
 		<>
+			{/* Members section */}
 			{members.length > 0 && (
 				<>
-					{members.map((option, index) => (
-						<AutocompleteItem
-							key={option.member.user.id}
-							icon={<StatusAwareAvatar user={option.member.user} size={24} guildId={guildId} />}
-							name={NicknameUtils.getNickname(option.member.user, guild?.id)}
-							description={option.member.user.tag}
-							isKeyboardSelected={index === keyboardFocusIndex}
-							isHovered={index === hoverIndex}
-							onSelect={() => onSelect(option)}
-							onMouseEnter={() => onMouseEnter(index)}
-							onMouseLeave={onMouseLeave}
-							innerRef={
-								rowRefs
-									? (node) => {
-											rowRefs.current[index] = node;
-										}
-									: undefined
-							}
-						/>
-					))}
-					{(users.length > 0 || specialMentions.length > 0 || roles.length > 0) && (
-						<div className={styles.divider} aria-hidden={true} />
-					)}
+					<div className={styles.sectionHeader}>{t`Members`}</div>
+					{members.map((option, index) => {
+						const currentIndex = membersOffset + index;
+						return (
+							<AutocompleteItem
+								key={option.member.user.id}
+								icon={<StatusAwareAvatar user={option.member.user} size={24} guildId={guildId} />}
+								name={NicknameUtils.getNickname(option.member.user, guild?.id)}
+								description={option.member.user.tag}
+								isKeyboardSelected={currentIndex === keyboardFocusIndex}
+								isHovered={currentIndex === hoverIndex}
+								onSelect={() => onSelect(option)}
+								onMouseEnter={() => onMouseEnter(currentIndex)}
+								onMouseLeave={onMouseLeave}
+								innerRef={
+									rowRefs
+										? (node) => {
+												rowRefs.current[currentIndex] = node;
+											}
+										: undefined
+								}
+							/>
+						);
+					})}
 				</>
 			)}
+			{/* Users section (DM channels) */}
 			{users.length > 0 && (
 				<>
+					{members.length === 0 && <div className={styles.sectionHeader}>{t`Users`}</div>}
 					{users.map((option, index) => {
-						const currentIndex = members.length + index;
+						const currentIndex = usersOffset + index;
 						return (
 							<AutocompleteItem
 								key={option.user.id}
@@ -114,13 +123,46 @@ export const AutocompleteMention = observer(function AutocompleteMention({
 							/>
 						);
 					})}
-					{(specialMentions.length > 0 || roles.length > 0) && <div className={styles.divider} aria-hidden={true} />}
 				</>
 			)}
+			{/* Roles section */}
+			{roles.length > 0 && (
+				<>
+					<div className={styles.sectionHeader}>{t`Roles`}</div>
+					{roles.map((option, index) => {
+						const currentIndex = rolesOffset + index;
+						return (
+							<AutocompleteItem
+								key={option.role.id}
+								name={
+									<span style={{color: option.role.color ? ColorUtils.int2rgb(option.role.color) : undefined}}>
+										@{option.role.name}
+									</span>
+								}
+								description={t`Notify users with this role who have permission to view this channel.`}
+								isKeyboardSelected={currentIndex === keyboardFocusIndex}
+								isHovered={currentIndex === hoverIndex}
+								onSelect={() => onSelect(option)}
+								onMouseEnter={() => onMouseEnter(currentIndex)}
+								onMouseLeave={onMouseLeave}
+								innerRef={
+									rowRefs
+										? (node) => {
+												rowRefs.current[currentIndex] = node;
+											}
+										: undefined
+								}
+							/>
+						);
+					})}
+				</>
+			)}
+			{/* Special mentions section (@everyone, @here) */}
 			{specialMentions.length > 0 && (
 				<>
+					<div className={styles.sectionHeader}>{t`Special`}</div>
 					{specialMentions.map((option, index) => {
-						const currentIndex = members.length + users.length + index;
+						const currentIndex = specialOffset + index;
 						return (
 							<AutocompleteItem
 								key={option.kind}
@@ -145,36 +187,8 @@ export const AutocompleteMention = observer(function AutocompleteMention({
 							/>
 						);
 					})}
-					{roles.length > 0 && <div className={styles.divider} aria-hidden={true} />}
 				</>
 			)}
-			{roles.length > 0 &&
-				roles.map((option, index) => {
-					const currentIndex = members.length + users.length + specialMentions.length + index;
-					return (
-						<AutocompleteItem
-							key={option.role.id}
-							name={
-								<span style={{color: option.role.color ? ColorUtils.int2rgb(option.role.color) : undefined}}>
-									@{option.role.name}
-								</span>
-							}
-							description={t`Notify users with this role who have permission to view this channel.`}
-							isKeyboardSelected={currentIndex === keyboardFocusIndex}
-							isHovered={currentIndex === hoverIndex}
-							onSelect={() => onSelect(option)}
-							onMouseEnter={() => onMouseEnter(currentIndex)}
-							onMouseLeave={onMouseLeave}
-							innerRef={
-								rowRefs
-									? (node) => {
-											rowRefs.current[currentIndex] = node;
-										}
-									: undefined
-							}
-						/>
-					);
-				})}
 		</>
 	);
 });
