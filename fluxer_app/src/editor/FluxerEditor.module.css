@@ -1,0 +1,160 @@
+/*
+ * Copyright (C) 2026 Fluxer Contributors
+ *
+ * This file is part of Fluxer.
+ *
+ * Fluxer is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Fluxer is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+.editorContainer {
+	position: relative;
+}
+
+.contentEditable {
+	width: 100%;
+	resize: none;
+	overflow: hidden;
+	white-space: pre-wrap;
+	word-break: break-word;
+	background-color: transparent;
+	color: var(--text-chat);
+	line-height: var(--textarea-line-height);
+	caret-color: var(--text-chat);
+	scrollbar-gutter: stable;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	font-family: inherit;
+	font-size: inherit;
+	min-height: 1lh;
+}
+
+.contentEditable:focus {
+	outline: none;
+}
+
+.placeholder {
+	color: var(--text-primary-muted);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	user-select: none;
+}
+
+.editorParagraph {
+	margin: 0;
+}
+
+.textBold {
+	font-weight: bold;
+}
+
+.textItalic {
+	font-style: italic;
+}
+
+.textUnderline {
+	text-decoration: underline;
+}
+
+.textStrikethrough {
+	text-decoration: line-through;
+}
+
+.mentionPill {
+	border-radius: var(--radius-md);
+	padding: 0 0.25rem;
+	font-weight: 500;
+	unicode-bidi: plaintext;
+	color: var(--markup-mention-text);
+	background-color: var(--markup-mention-fill);
+	border: 1px solid var(--markup-mention-border);
+	transition:
+		background-color var(--transition-fast),
+		color var(--transition-fast),
+		border-color var(--transition-fast);
+	display: inline;
+	align-items: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	line-height: inherit;
+	cursor: default;
+}
+
+.mentionPill:hover {
+	filter: brightness(0.95);
+}
+
+:global(.theme-dark) .mentionPill:hover {
+	filter: brightness(1.1);
+}
+
+.mentionPill.selected {
+	outline: 2px solid var(--brand-500);
+	outline-offset: -1px;
+}
+
+.everyoneMention {
+	background-color: var(--markup-everyone-fill);
+	color: var(--markup-everyone-text);
+	border: 1px solid var(--markup-everyone-border);
+}
+
+.hereMention {
+	background-color: var(--markup-here-fill);
+	color: var(--markup-here-text);
+	border: 1px solid var(--markup-here-border);
+}
+
+.channelIcon {
+	height: 1rem;
+	width: 1rem;
+	margin-right: 0.1em;
+	margin-top: -0.1em;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.emojiNode {
+	display: inline;
+	vertical-align: baseline;
+}
+
+.emojiNode img {
+	height: var(--custom-emoji-size-emoji);
+	width: var(--custom-emoji-size-emoji);
+	object-fit: contain;
+	vertical-align: bottom;
+}
+
+.emojiNode.selected img,
+.emojiNode.selected span {
+	outline: 2px solid var(--brand-500);
+	outline-offset: 1px;
+	border-radius: var(--radius-sm);
+}
+
+.mentionNode {
+}
+
+.channelMentionNode {
+}
+
+.emojiNodeTheme {
+}
